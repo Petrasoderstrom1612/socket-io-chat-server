@@ -35,20 +35,20 @@ const interval = setInterval(() => {
   if(current_interval % 6 === 0) {
     const user = USERS[Math.floor(Math.random() * USERS.length)];
     active_users.push(user);
-    io.emit(MESSAGE_TYPES.USER_JOINED, '', user.user);
+    io.emit(MESSAGE_TYPES.USER_JOINED, '', `${user.user}`);
     return;
   }
 
   active_users.forEach(user => {
     const message = USER_MESSAGES[Math.floor(Math.random() * USER_MESSAGES.length)];
     user.ttl--;
-    io.emit(MESSAGE_TYPES.USER_MESSAGE, message, user.user);
+    io.emit(MESSAGE_TYPES.USER_MESSAGE, message, `${user.user}`);
   });
 
   active_users.forEach(user => {
     if (user.ttl <= 0) {
       active_users.splice(active_users.indexOf(user), 1);
-      io.emit(MESSAGE_TYPES.USER_LEFT, '', user.user);
+      io.emit(MESSAGE_TYPES.USER_LEFT, '', `${user.user}`);
     }
   });
 
