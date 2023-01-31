@@ -11,6 +11,14 @@ const io = new Server(server, {
 });
 const PORT = process.env.PORT || 3000;
 
+const AUTH_USER : UserType= {
+  user: {
+    id: 999,
+    username: "AUTHENTICATED_WEB_USER",
+    color: "#D7D804",
+  },
+  ttl: 0,
+}
 
 import {MESSAGE_TYPES, USERS, USER_MESSAGES, UserType} from './constants';
 
@@ -21,11 +29,19 @@ app.get('/health', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+
+  socket.on(MESSAGE_TYPES.USER_MESSAGE, (data) => {
+    console.log(`message: ${data};`);
+    io.emit(MESSAGE_TYPES.USER_MESSAGE, data, AUTH_USER.user);
+  });
+
   console.log(`a user connected; socket_id: ${socket.id}`);
+  io.emit(MESSAGE_TYPES.USER_JOINED, '', AUTH_USER.user);
 });
 
 io.on('disconnect', (socket) => {
   console.log(`a user disconnected; socket_id: ${socket.id}`);
+  io.emit(MESSAGE_TYPES.USER_LEFT, '', socket.id);
 });
 
 server.listen(PORT, () => {
