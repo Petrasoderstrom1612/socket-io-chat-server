@@ -9,6 +9,11 @@ const io = new Server(server);
 
 import {MESSAGE_TYPES, USERS, USER_MESSAGES, UserType} from './constants';
 
+console.log('Starting server...');
+app.get('/health', (req, res) => {
+  res.send('OK');
+  res.sendStatus(200);
+});
 
 io.on('connection', (socket) => {
   console.log(`a user connected; socket_id: ${socket.id}`);
