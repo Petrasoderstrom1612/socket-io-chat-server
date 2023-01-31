@@ -5,6 +5,7 @@ import { Server } from 'socket.io';
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const PORT = process.env.PORT || 3000;
 
 
 import {MESSAGE_TYPES, USERS, USER_MESSAGES, UserType} from './constants';
@@ -23,8 +24,8 @@ io.on('disconnect', (socket) => {
   console.log(`a user disconnected; socket_id: ${socket.id}`);
 });
 
-server.listen(3000, () => {
-  console.log('listening on *:3000');
+server.listen(PORT, () => {
+  console.log(`listening on ${PORT}`);
 });
 
 const active_users : UserType[] = [];
